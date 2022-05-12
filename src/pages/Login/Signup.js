@@ -1,67 +1,79 @@
 import React from "react";
 import {
-  useSignInWithEmailAndPassword,
-  useSignInWithGoogle
+    useCreateUserWithEmailAndPassword,
+    useUpdateProfile
 } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import Loading from "../Shared/Loading";
 
-const Login = () => {
-  const navigate= useNavigate();
-  const location = useLocation();
-  let from = location.state?.from?.pathname || "/";
-  
+const Signup = () => {
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
-  const [signInWithGoogle, googleuser, googleloading, googleerror] =
-    useSignInWithGoogle(auth);
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
 
-  const [signInWithEmailAndPassword, emaiuser, emailloading, emailerror] =
-    useSignInWithEmailAndPassword(auth);
+  const [updateProfile, updating, uperror] = useUpdateProfile(auth);
 
-  const googleLogin = () => {
-    signInWithGoogle();
-  };
+  const navigate = useNavigate()
 
   let errorMessage;
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const email = data.email;
     const pass = data.password;
-    signInWithEmailAndPassword(email, pass);
+    await createUserWithEmailAndPassword(email, pass);
+    await updateProfile({ displayName: data?.name });
+    alert("Updated profile");
+    navigate('/appointment')
   };
 
-  if (emailerror || googleerror) {
+  if (error || uperror) {
     errorMessage = (
-      <p className="text-red-500">
-        {emailerror?.message || googleerror?.message}
-      </p>
+      <p className="text-red-500">{error?.message || uperror?.message}</p>
     );
   }
 
-  if (googleloading || emailloading) {
+  if (loading || updating) {
     return <Loading></Loading>;
-  }
-
-  if (googleuser || emaiuser) {
-    navigate(from, { replace: true });
   }
 
   return (
     <div className="flex h-screen justify-center items-center">
       <div class="card w-96 bg-base-100 shadow-xl">
         <div class="card-body">
-          <h2 class="text-center text-2xl font-bold">Log in</h2>
+          <h2 class="text-center text-2xl font-bold">Sign in</h2>
           <hr />
           <div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div class="form-control w-full max-w-xs">
+                {/* name */}
+                <label class="label">
+                  <span class="label-text-alt">Name</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="your name"
+                  class="input input-bordered w-full max-w-xs"
+                  {...register("name", {
+                    required: {
+                      value: true,
+                      message: "name is required",
+                    },
+                  })}
+                />
+                <label class="label">
+                  {errors.name?.type === "required" && (
+                    <span class="label-text-alt text-red-700">
+                      {errors.name.message}
+                    </span>
+                  )}
+                </label>
                 {/* email */}
                 <label class="label">
                   <span class="label-text-alt">Email</span>
@@ -131,22 +143,18 @@ const Login = () => {
                 <input
                   className="btn btn-primary w-full"
                   type="submit"
-                  value="Login"
+                  value="Sign up"
                 />
               </div>
               <p className="my-4">
                 <small>
-                  new to doctors portal?{" "}
-                  <Link className="text-blue-600 underline" to="/signup">create new account</Link>
+                  allrady have an account?{" "}
+                  <Link className="text-blue-600 underline" to="/login">
+                    login here
+                  </Link>
                 </small>
               </p>
             </form>
-          </div>
-          <div class="flex flex-col w-full border-opacity-50">
-            <div class="divider">OR</div>
-            <button onClick={googleLogin} class="btn btn-secondary">
-              Google login
-            </button>
           </div>
         </div>
       </div>
@@ -154,4 +162,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
