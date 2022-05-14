@@ -10,9 +10,9 @@ const Dhasboard = () => {
           <h2 className="text-2xl text-pink-700">Dash board</h2>
           <Outlet></Outlet>
         </div>
-        <div class="drawer-side">
+        <div class="drawer-side bg-indigo-300">
           <label for="sideBar-dashboard" class="drawer-overlay"></label>
-          <ul class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
+          <ul class="menu p-4 overflow-y-auto w-50 bg-base-100 text-base-content">
             {/* <!-- Sidebar content here --> */}
             <li>
               <Link to="/dashboard">My appoinment</Link>
