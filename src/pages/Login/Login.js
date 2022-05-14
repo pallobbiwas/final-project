@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle
@@ -6,13 +6,14 @@ import {
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
+import useToken from "../../hooks/useToken";
 import Loading from "../Shared/Loading";
 
 const Login = () => {
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   let from = location.state?.from?.pathname || "/";
-  
+
   const {
     register,
     formState: { errors },
@@ -28,6 +29,14 @@ const Login = () => {
   const googleLogin = () => {
     signInWithGoogle();
   };
+
+  const [token] = useToken(googleuser || emaiuser);
+
+  useEffect(() => {
+    if (token) {
+      navigate(from, { replace: true });
+    }
+  }, [token, from, navigate]);
 
   let errorMessage;
 
@@ -47,10 +56,6 @@ const Login = () => {
 
   if (googleloading || emailloading) {
     return <Loading></Loading>;
-  }
-
-  if (googleuser || emaiuser) {
-    navigate(from, { replace: true });
   }
 
   return (
@@ -137,7 +142,9 @@ const Login = () => {
               <p className="my-4">
                 <small>
                   new to doctors portal?{" "}
-                  <Link className="text-blue-600 underline" to="/signup">create new account</Link>
+                  <Link className="text-blue-600 underline" to="/signup">
+                    create new account
+                  </Link>
                 </small>
               </p>
             </form>

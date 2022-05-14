@@ -1,11 +1,12 @@
 import React from "react";
 import {
-    useCreateUserWithEmailAndPassword,
-    useUpdateProfile
+  useCreateUserWithEmailAndPassword,
+  useUpdateProfile
 } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
+import useToken from "../../hooks/useToken";
 import Loading from "../Shared/Loading";
 
 const Signup = () => {
@@ -20,7 +21,9 @@ const Signup = () => {
 
   const [updateProfile, updating, uperror] = useUpdateProfile(auth);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  //custom hook
+  const [token] = useToken(user);
 
   let errorMessage;
 
@@ -41,6 +44,10 @@ const Signup = () => {
 
   if (loading || updating) {
     return <Loading></Loading>;
+  }
+
+  if(token){
+    navigate('/appointment')
   }
 
   return (

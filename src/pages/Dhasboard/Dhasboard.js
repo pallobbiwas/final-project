@@ -20,6 +20,9 @@ const Dhasboard = () => {
             <li>
               <Link to="/dashboard/review">My review</Link>
             </li>
+            <li>
+              <Link to="/dashboard/alluser">All user</Link>
+            </li>
           </ul>
         </div>
       </div>

@@ -6,10 +6,10 @@ import auth from "../../firebase.init";
 
 const Navbar = () => {
   const [user] = useAuthState(auth);
-  console.log(user);
 
   const logout = () => {
     signOut(auth);
+    localStorage.removeItem('token')
   };
   return (
     <div className="navbar bg-base-100 mx-auto container">
