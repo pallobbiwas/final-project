@@ -1,10 +1,47 @@
 import { format } from "date-fns";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
+import auth from "../../firebase.init";
 
-const BookinModal = ({ setTreatment, date, treatment: { name, slots } }) => {
+const BookinModal = ({
+  setTreatment,
+  date,
+  treatment: { _id, name, slots },
+}) => {
+  const [user] = useAuthState(auth);
+  const formatedTime = format(date, "PP");
+  console.log(user.email);
   const fromSubmit = (e) => {
     e.preventDefault();
-    setTreatment(null)
+    const slot = e.target.time.value;
+    const booking = {
+      treatmentId: _id,
+      treatment: name,
+      date: formatedTime,
+      slot,
+      patientEmail: user.email,
+      patientName: user.displayName,
+      phone: e.target.phoneanumber.value,
+    };
+
+    fetch("http://localhost:5000/booking", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(booking),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if(data.success){
+          toast(`Appoinment is set at ,${formatedTime} at ${slot}`)
+        }
+        else{
+          toast.error(data.error)
+        }
+        setTreatment(null);
+      });
   };
   return (
     <div>
@@ -42,21 +79,26 @@ const BookinModal = ({ setTreatment, date, treatment: { name, slots } }) => {
                 ))}
               </select>
               <input
+                readOnly
+                value={user.displayName}
                 name="name"
                 type="text"
                 placeholder="Full name"
                 class="input input-bordered w-full max-w-xs"
               />
               <input
-                name="phoneanumber"
-                type="text"
-                placeholder="Phone number"
-                class="input input-bordered w-full max-w-xs"
-              />
-              <input
+                readOnly
+                value={user.email}
                 name="email"
                 type="text"
                 placeholder="Email"
+                class="input input-bordered w-full max-w-xs"
+              />
+              <br />
+              <input
+                name="phoneanumber"
+                type="text"
+                placeholder="Phone number"
                 class="input input-bordered w-full max-w-xs"
               />
               <br />

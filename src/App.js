@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import About from "./pages/About/About";
 import Appoinment from "./pages/Appoinment/Appoinment";
@@ -27,6 +29,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
       </Routes>
+      <ToastContainer />
     </div>
   );
 }
