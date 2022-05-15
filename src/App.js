@@ -11,6 +11,7 @@ import Myreview from "./pages/Dhasboard/Myreview";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import RequerAuth from "./pages/Login/RequerAuth";
+import RiquerAdmin from "./pages/Login/RiquerAdmin";
 import Signup from "./pages/Login/Signup";
 import Navbar from "./pages/Shared/Navbar";
 
@@ -39,7 +40,14 @@ function App() {
         >
           <Route index element={<Myappoinment></Myappoinment>}></Route>
           <Route path="review" element={<Myreview></Myreview>}></Route>
-          <Route path="alluser" element={<Alluser></Alluser>}></Route>
+          <Route
+            path="alluser"
+            element={
+              <RiquerAdmin>
+                <Alluser></Alluser>
+              </RiquerAdmin>
+            }
+          ></Route>
         </Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/login" element={<Login />}></Route>
