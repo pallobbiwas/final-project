@@ -9,10 +9,17 @@ const UserRow = ({ refetch, user: { email, role } }) => {
         authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 403) {
+          toast.error("faild to make an admin");
+        }
+        return res.json();
+      })
       .then((data) => {
-        toast.success('successfull make an admin');
-        refetch();
+        if (data.modifiedCount) {
+          toast.success("successfull make an admin");
+          refetch();
+        }
       });
   };
   return (
@@ -24,7 +31,9 @@ const UserRow = ({ refetch, user: { email, role } }) => {
           <button onClick={makeAdmin} class="btn btn-xs">
             Make admin
           </button>
-        ): <p className="text-green-600">Allready make admin</p>}
+        ) : (
+          <p className="text-green-600">Allready make admin</p>
+        )}
       </td>
       <td>
         <button class="btn btn-xs">Remove</button>
