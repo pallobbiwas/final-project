@@ -4,8 +4,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import About from "./pages/About/About";
 import Appoinment from "./pages/Appoinment/Appoinment";
+import AddDoctors from "./pages/Dhasboard/AddDoctors";
 import Alluser from "./pages/Dhasboard/Alluser";
 import Dhasboard from "./pages/Dhasboard/Dhasboard";
+import ManageDoctors from "./pages/Dhasboard/ManageDoctors";
 import Myappoinment from "./pages/Dhasboard/Myappoinment";
 import Myreview from "./pages/Dhasboard/Myreview";
 import Home from "./pages/Home/Home";
@@ -45,6 +47,22 @@ function App() {
             element={
               <RiquerAdmin>
                 <Alluser></Alluser>
+              </RiquerAdmin>
+            }
+          ></Route>
+          <Route
+            path="adddoctor"
+            element={
+              <RiquerAdmin>
+                <AddDoctors></AddDoctors>
+              </RiquerAdmin>
+            }
+          ></Route>
+          <Route
+            path="manage"
+            element={
+              <RiquerAdmin>
+                <ManageDoctors></ManageDoctors>
               </RiquerAdmin>
             }
           ></Route>

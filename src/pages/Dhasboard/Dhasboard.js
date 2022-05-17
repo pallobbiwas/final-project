@@ -11,8 +11,9 @@ const Dhasboard = () => {
     <div className="container mx-auto mt-20">
       <div class="drawer drawer-mobile">
         <input id="sideBar-dashboard" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content">
-          <h2 className="text-2xl text-pink-700">Dash board</h2>
+        <div class="drawer-content pl-10 pt-4">
+          <h2 className="text-2xl text-pink-700 text-center">Dash board</h2>
+          <hr />
           <Outlet></Outlet>
         </div>
         <div class="drawer-side bg-indigo-300">
@@ -26,9 +27,18 @@ const Dhasboard = () => {
               <Link to="/dashboard/review">My review</Link>
             </li>
             {admin && (
-              <li>
-                <Link to="/dashboard/alluser">All user</Link>
-              </li>
+              <>
+                <li>
+                  <Link to="/dashboard/alluser">All user</Link>
+                </li>
+
+                <li>
+                  <Link to="/dashboard/adddoctor">Add doctor</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/manage">Manage doctor</Link>
+                </li>
+              </>
             )}
           </ul>
         </div>
